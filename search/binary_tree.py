@@ -16,6 +16,19 @@ class Node(object):
             else:
                 self.right = Node(value)
 
+    def contains(self, value):
+        if value == self.value:
+            return True
+        elif value < self.value:
+            if self.left:
+                return self.left.contains(value)
+            else:
+                return False
+        else:
+            if self.right:
+                return self.right.contains(value)
+            else:
+                return False
 
 class BinaryTree:
     def __init__(self):
@@ -27,6 +40,9 @@ class BinaryTree:
         else:
             self.root = Node(value)
 
+    def contains(self, value):
+        return self.root.contains(value)
+
 
 if __name__ == '__main__':
     bt = BinaryTree()
@@ -36,3 +52,9 @@ if __name__ == '__main__':
     assert bt.root.left.value == 7
     bt.add(12)
     assert bt.root.right.value == 12
+    # contains
+    assert bt.contains(10)
+    assert bt.contains(7)
+    assert bt.contains(12)
+    assert not bt.contains(42)
+
