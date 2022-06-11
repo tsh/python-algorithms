@@ -41,18 +41,19 @@ def find_employee_free_time(schedule):
         heappush(heap, EmployeeInterval(employee_number, schedule[employee_number][0], 0))
         employee_number += 1
 
-    prev_einterval = heap[0]
+    longest_end = heap[0].interval.end
     while heap:
         heap_top = heappop(heap)
-        if prev_einterval.interval.end < heap_top.interval.start:
+        if longest_end < heap_top.interval.start:
             # gap between intervals
-            result.append(Interval(prev_einterval.interval.end, heap_top.interval.start))
-            prev_einterval = heap_top
+            result.append(Interval(longest_end, heap_top.interval.start))
+            longest_end = heap_top.interval.end
         else:
-            # intervals overlaps
-            if prev_einterval.interval.end < heap_top.interval.end:
-                prev_einterval = heap_top
+            # intervals overlaps, check if new interval takes longer time
+            if longest_end < heap_top.interval.end:
+                longest_end = heap_top.interval.end
 
+        # try to add new interval from same employee, if any
         employee_intervals = schedule[heap_top.employee]
         cur_interval_idx = heap_top.interval_index
         if cur_interval_idx + 1 < len(employee_intervals):
