@@ -18,13 +18,18 @@ class Node:
             temp = temp.next
         print()
 
+    def __repr__(self):
+        return f'{self.value} -> {self.next}'
+
 
 def reverse(head):
     prev = None
-    cur = head
-    while cur:
-        pass
-    return head
+    while head:
+        nxt = head.next
+        head.next = prev
+        prev = head
+        head = nxt
+    return prev
 
 
 def main():
